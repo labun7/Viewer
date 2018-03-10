@@ -330,7 +330,12 @@ extension VideoView {
             #endif
         } else if let url = viewable.url {
             DispatchQueue.global(qos: .background).async {
-                let streamingURL = URL(string: url)!
+                var streamingURL: URL!
+                if url.hasPrefix("/") {
+                    streamingURL = URL(fileURLWithPath: url)
+                } else {
+                    streamingURL = URL(string: url)!
+                }
                 self.playerLayer.player = AVPlayer(url: streamingURL)
                 self.playerLayer.isHidden = true
 
